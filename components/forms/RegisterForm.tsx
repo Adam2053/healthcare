@@ -24,10 +24,11 @@ import { createUser } from "@/lib/actions/patient.actions";
 import { User } from "@/types";
 import { FormFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Doctors, GenderOptions } from "@/constants";
+import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
 import { Label } from "../ui/label";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
+import FileUploader from "../FileUploader";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +93,7 @@ const RegisterForm = ({ user }: { user: User }) => {
           iconAlt="user"
         />
 
-        <div className="flex force-marginTop flex-col gap-6 xl:flex-row">
+        <div className="flex  flex-col gap-6 xl:flex-row">
           <CustomFromField
             control={form.control}
             fieldType={FormFieldType.INPUT}
@@ -110,7 +111,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             placeholder="(555) 123-567"
           />
         </div>
-        <div className="flex force-marginTop flex-col gap-6 xl:flex-row">
+        <div className="flex  flex-col gap-6 xl:flex-row">
           <CustomFromField
             control={form.control}
             fieldType={FormFieldType.DATE_PICKER}
@@ -161,7 +162,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             placeholder="Software Engineer"
           />
         </div>
-        <div className="flex flex-col gap-6 xl:flex-row">
+        <div className="flex flex-col gap-6 xl:flex-row ">
           <CustomFromField
             control={form.control}
             fieldType={FormFieldType.INPUT}
@@ -203,8 +204,114 @@ const RegisterForm = ({ user }: { user: User }) => {
             </SelectItem>
           ))}
         </CustomFromField>
-        <div className="flex flex-col gap-6 xl:flex-row"></div>
-        <div className="flex flex-col gap-6 xl:flex-row"></div>
+        <div className="flex flex-col gap-6 xl:flex-row ">
+          <CustomFromField
+            control={form.control}
+            fieldType={FormFieldType.INPUT}
+            name="insuranceProvider"
+            label="Insurance Provider"
+            placeholder="BlueCross BlueShield"
+          />
+          <CustomFromField
+            control={form.control}
+            fieldType={FormFieldType.INPUT}
+            name="insurancePolicyNumber"
+            label="Insurance Policy Number"
+            placeholder="123456789"
+          />
+        </div>
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFromField
+            control={form.control}
+            fieldType={FormFieldType.TEXTAREA}
+            name="allergies"
+            label="Allergies (if any)"
+            placeholder="Pollen, Peanuts, Penicillin"
+          />
+          <CustomFromField
+            control={form.control}
+            fieldType={FormFieldType.TEXTAREA}
+            name="currentMedication"
+            label="Current Medication (if any)"
+            placeholder="Ibuprofen 200mg Paracetamol 500mg"
+          />
+        </div>
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFromField
+            control={form.control}
+            fieldType={FormFieldType.TEXTAREA}
+            name="familyMedicalHistory"
+            label="Family Medical History"
+            placeholder="Mother had diabetes and Father had blood pressure"
+          />
+          <CustomFromField
+            control={form.control}
+            fieldType={FormFieldType.TEXTAREA}
+            name="pastMedicalHistory"
+            label="Past Medical History"
+            placeholder="Appendectomy, Tonsillectomy"
+          />
+        </div>
+        <section className="space-y-6">
+          <div className="mb-9 space-y-1"></div>
+          <h2 className="sub-header">Identification and Verification</h2>
+        </section>
+
+        <CustomFromField
+          control={form.control}
+          fieldType={FormFieldType.SELECT}
+          name="identificationType"
+          label="Identification Type"
+          placeholder="Select an identification type"
+        >
+          {IdentificationTypes.map((type) => (
+            <SelectItem key={type} value={type}>
+              {type}
+            </SelectItem>
+          ))}
+        </CustomFromField>
+        <CustomFromField
+          control={form.control}
+          fieldType={FormFieldType.INPUT}
+          name="identificationNumber"
+          label="Identification Number"
+          placeholder="123456789"
+        />
+
+        <CustomFromField
+          fieldType={FormFieldType.SKELETON}
+          control={form.control}
+          name="identificationDocument"
+          label="Scanned copy of identification document"
+          renderSkeleton={(field) => (
+            <FormControl>
+              <FileUploader files={field.value} onChange={field.onChange} />
+            </FormControl>
+          )}
+        />
+
+        <section className="space-y-6">
+          <div className="mb-9 space-y-1"></div>
+          <h2 className="sub-header">Consent and Privacy</h2>
+        </section>
+        <CustomFromField
+          fieldType={FormFieldType.CHECKBOX}
+          control={form.control}
+          name="treatmentConsent"
+          label="I conset to treatment"
+        />
+        <CustomFromField
+          fieldType={FormFieldType.CHECKBOX}
+          control={form.control}
+          name="disclosureConsent"
+          label="I conset to disclosure of the information"
+        />
+        <CustomFromField
+          fieldType={FormFieldType.CHECKBOX}
+          control={form.control}
+          name="privacyConsent"
+          label="I conset to privacy policy"
+        />
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
       </form>
     </Form>

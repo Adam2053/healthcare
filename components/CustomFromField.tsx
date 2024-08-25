@@ -21,6 +21,7 @@ import { E164Number } from "libphonenumber-js/core";
 import { useState } from "react";
 import { date } from "zod";
 import { Select, SelectContent, SelectValue, SelectTrigger } from "./ui/select";
+import { Textarea } from "./ui/textarea";
 
 interface CustomProps {
   control: any;
@@ -106,10 +107,8 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           </FormControl>
         </div>
       );
-
     case FormFieldType.SKELETON:
       return renderSkeleton ? renderSkeleton(field) : null;
-
     case FormFieldType.SELECT:
       return (
         <FormControl>
@@ -123,6 +122,23 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               {props.children}
             </SelectContent>
           </Select>
+        </FormControl>
+      );
+    case FormFieldType.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea
+            className="shad-textArea"
+            disabled={props.disabled}
+            placeholder={placeholder}
+            {...field}
+          />
+        </FormControl>
+      );
+    case FormFieldType.CHECKBOX:
+      return (
+        <FormControl>
+          <div className="flex items-center gap-4"></div>
         </FormControl>
       );
     default:
